@@ -310,15 +310,25 @@ function getActionButtonHtml(onclickAction) {
   `;
 }
 
-// 5, 6. [요청사항 준수]
-// - 버튼 명칭 통일: '리스트로 돌아가기'
+// 2. [요청사항 준수] 게시글 상세 페이지 수정 버튼 컴포넌트 헬퍼
+function getEditActionButtonHtml(onclickAction) {
+  return `
+    <button onclick="${onclickAction}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition-all active:scale-95">
+      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+      <span>수정</span>
+    </button>
+  `;
+}
+
+// 5, 6, 3. [요청사항 준수]
+// - 버튼 명칭: '돌아가기'
 // - 버튼 색상: 밝은 색상 (화이트/아이보리 계열 bg-white hover:bg-slate-100)
 // - 텍스트 및 테두리: 버튼보다 어두운 색상 (border-2 border-slate-700 text-slate-800)으로 강한 대비를 주어 가독성 극대화
 function getBackToListButtonHtml(onclickAction) {
   return `
     <button onclick="${onclickAction}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm border-2 border-slate-700 shadow-sm transition-all active:scale-95">
       <i data-lucide="list" class="w-4 h-4 text-slate-800 stroke-[2.5]"></i>
-      <span>리스트로 돌아가기</span>
+      <span>돌아가기</span>
     </button>
   `;
 }
@@ -484,7 +494,7 @@ function renderWorkDetailView(container, postId) {
     <div class="max-w-3xl mx-auto">
       <button onclick="navigateTo('work')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-indigo-600 mb-6 transition-colors">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        <span>게시글 리스트로 돌아가기</span>
+        <span>돌아가기</span>
       </button>
 
       <article class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs mb-8">
@@ -514,12 +524,12 @@ function renderWorkDetailView(container, postId) {
           ${renderedContent}
         </div>
 
-        <!-- 5, 6. [요청사항 준수] '리스트로 돌아가기' 밝은 배경 + 어두운 텍스트/테두리 대비 버튼 -->
+        <!-- 2, 3. [요청사항 준수] 좌측 하단 '돌아가기' 및 우측 수정 버튼 -->
         <div class="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
           ${getBackToListButtonHtml("navigateTo('work')")}
 
           <div class="flex items-center gap-2">
-            ${getActionButtonHtml(`openPostEditorModal('edit', 'work', '', '${post.id}')`)}
+            ${getEditActionButtonHtml(`openPostEditorModal('edit', 'work', '', '${post.id}')`)}
             <button onclick="deletePost('work', '${post.id}')" class="px-3 py-2 rounded-xl text-xs text-rose-500 hover:text-rose-700 font-semibold hover:bg-rose-50 transition-colors">
               삭제
             </button>
@@ -670,7 +680,7 @@ function renderTripDetailView(container, postId) {
     <div class="max-w-3xl mx-auto">
       <button onclick="navigateTo('trip', { tripDestId: '${foundPost.destId}' })" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-indigo-600 mb-6 transition-colors">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        <span>${destName} 게시글 리스트로 돌아가기</span>
+        <span>돌아가기</span>
       </button>
 
       <article class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs mb-8">
@@ -701,12 +711,12 @@ function renderTripDetailView(container, postId) {
           ${renderedContent}
         </div>
 
-        <!-- 5, 6. [요청사항 준수] '리스트로 돌아가기' 밝은 배경 + 어두운 텍스트/테두리 대비 버튼 -->
+        <!-- 2, 3. [요청사항 준수] 좌측 하단 '돌아가기' 및 우측 수정 버튼 -->
         <div class="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
           ${getBackToListButtonHtml(`navigateTo('trip', { tripDestId: '${foundPost.destId}' })`)}
 
           <div class="flex items-center gap-2">
-            ${getActionButtonHtml(`openPostEditorModal('edit', 'trip', '${foundPost.destId}', '${foundPost.id}')`)}
+            ${getEditActionButtonHtml(`openPostEditorModal('edit', 'trip', '${foundPost.destId}', '${foundPost.id}')`)}
             <button onclick="deleteTripPost('${foundPost.id}')" class="px-3 py-2 rounded-xl text-xs text-rose-500 hover:text-rose-700 font-semibold hover:bg-rose-50 transition-colors">
               삭제
             </button>
@@ -815,7 +825,7 @@ function renderDiaryDetailView(container, postId) {
     <div class="max-w-3xl mx-auto">
       <button onclick="navigateTo('diary')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-violet-600 mb-6 transition-colors">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        <span>게시글 리스트로 돌아가기</span>
+        <span>돌아가기</span>
       </button>
 
       <article class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs mb-8">
@@ -848,12 +858,12 @@ function renderDiaryDetailView(container, postId) {
           ${renderedContent}
         </div>
 
-        <!-- 5, 6. [요청사항 준수] '리스트로 돌아가기' 밝은 배경 + 어두운 텍스트/테두리 대비 버튼 -->
+        <!-- 2, 3. [요청사항 준수] 좌측 하단 '돌아가기' 및 우측 수정 버튼 -->
         <div class="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
           ${getBackToListButtonHtml("navigateTo('diary')")}
 
           <div class="flex items-center gap-2">
-            ${getActionButtonHtml(`openPostEditorModal('edit', 'diary', '', '${post.id}')`)}
+            ${getEditActionButtonHtml(`openPostEditorModal('edit', 'diary', '', '${post.id}')`)}
             <button onclick="deletePost('diary', '${post.id}')" class="px-3 py-2 rounded-xl text-xs text-rose-500 hover:text-rose-700 font-semibold hover:bg-rose-50 transition-colors">
               삭제
             </button>
@@ -1412,7 +1422,10 @@ function renderTripDestImagesList() {
 
         <div class="flex-1 w-full space-y-2">
           <div class="flex items-center justify-between">
-            <h5 class="text-xs font-bold text-slate-800">${escapeHtml(dest.name)}</h5>
+            <h5 class="text-xs font-bold text-slate-800" id="dest-name-title-${dest.id}">${escapeHtml(dest.name)}</h5>
+            <button onclick="editTripDestinationName('${dest.id}')" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold px-2 py-0.5 rounded hover:bg-indigo-50 transition-colors">
+              이름 수정
+            </button>
           </div>
 
           <div class="flex gap-2">
@@ -1454,6 +1467,20 @@ function moveTripDestOrder(index, direction) {
   renderTripDestImagesList();
   // 변경된 순서를 즉시 반영하여 Trip 메인에도 적용
   if (currentRoute.menu === 'trip') renderCurrentView();
+}
+
+// 1. [요청사항 준수] 여행지 이름 수정 함수
+function editTripDestinationName(destId) {
+  const dest = (appState.tripDestinations || []).find(d => d.id === destId);
+  if (!dest) return;
+
+  const newName = prompt("변경할 여행지 이름을 입력하세요:", dest.name);
+  if (newName && newName.trim() !== "") {
+    dest.name = newName.trim();
+    saveState();
+    renderTripDestImagesList();
+    if (currentRoute.menu === 'trip') renderCurrentView();
+  }
 }
 
 function addNewTripDestination() {
