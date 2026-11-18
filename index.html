@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YeonLog</title>
+  <!-- Tailwind CSS CDN & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 구글 폰트: 필기체(Caveat, Dancing Script) & 본문용 Pretendard -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Pretendard:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  
+  <!-- TOAST UI Editor CDN CSS & JS -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    .font-cursive {
+      font-family: 'Caveat', 'Dancing Script', cursive;
+    }
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .toastui-editor-defaultUI {
+      border-radius: 0.75rem !important;
+      border-color: #e2e8f0 !important;
+      overflow: hidden;
+    }
+    .toastui-editor-toolbar {
+      background-color: #f8fafc !important;
+    }
+    /* Rendered Markdown Viewer Styles */
+    .blog-post-content img {
+      max-width: 100%;
+      border-radius: 1rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+    }
+    .blog-post-content h1 {
+      font-size: 1.875rem;
+      font-weight: 800;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+      color: #0f172a;
+    }
+    .blog-post-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 1.75rem;
+      margin-bottom: 0.75rem;
+      color: #1e293b;
+    }
+    .blog-post-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #334155;
+    }
+    .blog-post-content p {
+      margin-bottom: 1.15rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+    .blog-post-content ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .blog-post-content ol {
+      list-style-type: decimal;
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .blog-post-content li {
+      margin-bottom: 0.4rem;
+      line-height: 1.7;
+    }
+    .blog-post-content blockquote {
+      border-left: 4px solid #6366f1;
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+      color: #475569;
+      font-style: italic;
+      background: #f8fafc;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+    .blog-post-content pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-size: 0.875rem;
+    }
+    .blog-post-content code:not(pre code) {
+      background-color: #f1f5f9;
+      color: #4f46e5;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.35rem;
+      font-size: 0.875em;
+    }
+    .blog-post-content hr {
+      margin: 2rem 0;
+      border-color: #e2e8f0;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- 네비게이션 헤더 -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- 좌측 상단: 필기체 YeonLog 로고 -->
+      <a href="javascript:void(0)" onclick="navigateTo('home')" class="cursor-pointer group flex items-center py-1">
+        <span class="font-cursive text-3xl sm:text-4xl text-slate-900 group-hover:text-indigo-600 transition-colors tracking-wide select-none font-bold">
+          YeonLog
+        </span>
+      </a>
+
+      <!-- 상단 GNB: 1 depth 메뉴만 표시 -->
+      <nav class="flex items-center gap-1 sm:gap-2">
+        <button onclick="navigateTo('home')" id="nav-btn-home" class="nav-item-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-indigo-600 bg-indigo-50">
+          <span>Home</span>
+        </button>
+
+        <button onclick="navigateTo('work')" id="nav-btn-work" class="nav-item-btn px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all flex items-center gap-1">
+          <span>Work</span>
+        </button>
+
+        <button onclick="navigateTo('trip')" id="nav-btn-trip" class="nav-item-btn px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all flex items-center gap-1">
+          <span>Trip</span>
+        </button>
+
+        <button onclick="navigateTo('diary')" id="nav-btn-diary" class="nav-item-btn px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all flex items-center gap-1">
+          <span>Diary</span>
+        </button>
+
+        <!-- 블로그 설정 버튼 -->
+        <div class="ml-2 pl-2 border-l border-slate-200">
+          <button onclick="openCustomizerModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-indigo-600 shadow-xs transition-all active:scale-95" title="하위 메뉴 & 여행지 관리">
+            <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">블로그 설정</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 메인 컨텐츠 영역 -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8">
+    <div id="content-container"></div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-400 mt-auto">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-cursive text-xl font-bold text-slate-800">YeonLog</span>
+        <span>• Personal Archive</span>
+      </div>
+      <div>
+        <p>© 2026 YeonLog. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 블로그 설정 모달 ==================== -->
+  <div id="customizer-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full border border-slate-100 overflow-hidden my-8 max-h-[90vh] flex flex-col">
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+            <i data-lucide="settings-2" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base leading-tight">블로그 설정</h3>
+            <p class="text-xs text-slate-500">하위 메뉴 및 여행지 관리</p>
+          </div>
+        </div>
+        <button onclick="closeCustomizerModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex border-b border-slate-200 bg-slate-50/50 px-6 pt-2 gap-4 text-sm font-medium">
+        <button onclick="switchModalTab('menu-manage')" id="tab-btn-menu-manage" class="pb-3 border-b-2 border-indigo-600 text-indigo-600 font-semibold flex items-center gap-2 transition-all">
+          <i data-lucide="folder-tree" class="w-4 h-4"></i> 하위 메뉴 관리
+        </button>
+        <button onclick="switchModalTab('trip-cat-manage')" id="tab-btn-trip-cat-manage" class="pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2 transition-all">
+          <i data-lucide="map-pin" class="w-4 h-4"></i> 여행지 관리
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto flex-1 space-y-6">
+        <!-- 4. [요청사항 준수] 각 탭 하단의 설명란(안내 박스) 삭제됨 -->
+
+        <!-- 탭 1: 하위 메뉴 관리 (Work, Trip, Diary 순서 적용 및 순서 이동 버튼) -->
+        <div id="tab-content-menu-manage" class="space-y-5">
+          <!-- 새 하위 메뉴 추가 -->
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+            <h5 class="text-xs font-bold text-slate-800">새 하위 메뉴 추가</h5>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+              <div class="sm:col-span-4">
+                <select id="new-submenu-parent" class="w-full text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 bg-white">
+                  <option value="work">Work (업무)</option>
+                  <option value="trip">Trip (여행)</option>
+                  <option value="diary">Diary (일상)</option>
+                </select>
+              </div>
+              <div class="sm:col-span-6">
+                <input type="text" id="new-submenu-name" placeholder="하위 메뉴 / 분류 이름" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white">
+              </div>
+              <div class="sm:col-span-2">
+                <button onclick="addSubmenuItem()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-all">
+                  추가
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1. [요청사항 준수] Work, Trip, Diary 순서 고정 & 하위 메뉴끼리 순서 변경 기능 제공 -->
+          <div class="space-y-4">
+            <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wider">등록된 하위 메뉴 목록</h5>
+            <div class="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-100 bg-white" id="submenu-management-list">
+            </div>
+          </div>
+        </div>
+
+        <!-- 탭 2: 여행지 관리 (2. 여행지 목록 순서 변경 가능 & 3. 삭제 버튼 우측 하단 배치) -->
+        <div id="tab-content-trip-cat-manage" class="hidden space-y-5">
+          <!-- 4. [요청사항 준수] 설명란 삭제됨 -->
+
+          <!-- 신규 여행지 등록 폼 -->
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+            <h5 class="text-xs font-bold text-slate-800">새 여행지 등록</h5>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" id="new-dest-name-input" placeholder="여행지 이름 (예: 제주도, 교토, 파리)" class="text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white">
+              <input type="text" id="new-dest-image-input" placeholder="대표 이미지 URL (비워두면 기본 이미지)" class="text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white">
+            </div>
+            <button onclick="addNewTripDestination()" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold shadow-xs transition-all">
+              여행지 추가
+            </button>
+          </div>
+
+          <!-- 등록된 여행지 리스트 및 순서 변경 UI -->
+          <div class="space-y-3">
+            <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wider">등록된 여행지 목록</h5>
+            <div class="space-y-3" id="trip-dest-images-list">
+              <!-- JS 동적 렌더링 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+        <button onclick="resetToSampleData()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold underline underline-offset-4">샘플 데이터로 초기화</button>
+        <button onclick="saveAndCloseCustomizerModal()" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST UI Editor 기반 통합 글 작성/수정 모달 ==================== -->
+  <div id="post-editor-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-100 overflow-hidden my-4 max-h-[94vh] flex flex-col">
+      
+      <!-- 모달 헤더 -->
+      <div class="px-6 py-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+        <div class="flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-4 h-4 text-indigo-600"></i>
+          <h3 class="font-bold text-slate-800 text-base" id="post-modal-heading">글 작성 / 수정</h3>
+        </div>
+        <button onclick="closePostEditorModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- 모달 본문 (스크롤) -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1">
+        <input type="hidden" id="editor-post-target-menu" value="work">
+        <input type="hidden" id="editor-post-target-dest-id" value="">
+        <input type="hidden" id="editor-post-edit-id" value="">
+
+        <!-- 게시글 분류 필드 (Home이 아닐 때만 노출) -->
+        <div id="editor-category-field-wrapper">
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">게시글 분류 *</label>
+          <select id="editor-category-select" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white">
+          </select>
+        </div>
+
+        <!-- 게시글 제목 (Home이 아닐 때만 노출) -->
+        <div id="editor-title-field-wrapper">
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">게시글 제목 *</label>
+          <input type="text" id="editor-title-input" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white" placeholder="제목을 입력하세요">
+        </div>
+
+        <!-- 대표 이미지 설정 (Home이 아닐 때만 노출: 에디터에서 추가된 이미지 중 클릭 선택) -->
+        <div id="editor-cover-field-wrapper" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-slate-700">
+              대표 이미지 설정
+            </label>
+            <span class="text-[11px] text-slate-500">추가한 이미지를 <strong class="text-indigo-600 font-bold">클릭</strong>하여 대표 이미지로 지정할 수 있습니다</span>
+          </div>
+
+          <div class="flex gap-2">
+            <input type="text" id="editor-new-image-url" placeholder="이미지 URL 입력 후 '이미지 추가' 클릭" class="flex-1 text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white">
+            <button onclick="addImageToEditorGallery()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold shrink-0 transition-colors">
+              이미지 추가
+            </button>
+            <button onclick="addPresetImageToEditorGallery()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold shrink-0 transition-colors">
+              랜덤 샘플
+            </button>
+          </div>
+
+          <div id="editor-gallery-thumbnails" class="flex flex-wrap gap-2.5 pt-1 items-center min-h-[50px]">
+          </div>
+          <p id="editor-selected-cover-info" class="text-[11px] text-indigo-600 font-medium"></p>
+        </div>
+
+        <!-- TOAST UI Editor 마운트 영역 -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            에디터 본문 내용 * <span class="text-[11px] font-normal text-slate-400">(마크다운 및 WYSIWYG 지원, 툴바의 이미지 버튼 또는 이미지 URL 삽입 가능)</span>
+          </label>
+          <div id="tui-editor-container" class="min-h-[350px]"></div>
+        </div>
+      </div>
+
+      <!-- 모달 푸터 버튼 -->
+      <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button onclick="closePostEditorModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200 transition-colors">취소</button>
+        <button onclick="submitPostEditor()" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition-all active:scale-95" id="editor-submit-btn">
+          저장
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
